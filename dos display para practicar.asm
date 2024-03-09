@@ -6,7 +6,7 @@ INCLUDE <P16F877.INC>
 
 ORG 0x00 ;Inicio de programa
 UNIDADES EQU 0x20 ;usamos la dirección de memoria 23  
-DECENAS EQU 0x21 ;Usamos la direccion de memoria 24
+DECENAS  EQU 0x21 ;Usamos la direccion de memoria 24
 
 CLRF PORTC ;limpiar registro PORTC
 CLRF PORTB ;limpiar registro PORTB
@@ -54,10 +54,15 @@ MOVWF PORTD
 GOTO UNIDADES_CICLO
 
 REINICIAR_UNIDADES
-MOVLW b'00000000'
+MOVLW b'00000000' ;reiniciar en ceros variable UNIDADES
 MOVWF UNIDADES
-MOVLW b'00111111'
+MOVLW b'00111111' ;dibujar Cero en display nuevamente
 MOVWF PORTD
+
+INCF DECENAS,1 ;incrementar en 1 variable DECENAS
+MOVF DECENAS,W ;mover 00000001,00000010,00000011... etc a W
+CALL TABLA_DECENAS ;llamar a Tabla Decenas... para desplegar la decena correspondiente
+MOVWF PORTC ;moverlo al PUERTO C encargado de las DECENAS
 GOTO UNIDADES_CICLO
 
 	
@@ -74,9 +79,22 @@ RETLW b'01111101' 	  ;SEIS
 RETLW b'00000111'	  ;SIETE
 RETLW b'01111111' 	  ;OCHO
 RETLW b'01100111'	  ;NUEVE
-GOTO REINICIAR_UNIDADES
+GOTO REINICIAR_UNIDADES ;DIEZ
 
 
+TABLA_DECENAS
+ADDWF PCL,F ;Suma el contenido del Registro W a PCL y el resultado se almacena en el mismo registro (PCL)
+RETLW b'00111111'     ;CERO 
+RETLW b'00000110' 	  ;UNO
+RETLW b'01011011' 	  ;DOS
+RETLW b'01001111' 	  ;TRES
+RETLW b'01100110'	  ;CUATRO
+RETLW b'01101101' 	  ;CINCO
+RETLW b'01111101' 	  ;SEIS
+RETLW b'00000111'	  ;SIETE
+RETLW b'01111111' 	  ;OCHO
+RETLW b'01100111'	  ;NUEVE
+;GOTO REINICIAR_UNIDADES ;DIEZ
 
 
 ;---------------------------------------------------------------------------------------------
