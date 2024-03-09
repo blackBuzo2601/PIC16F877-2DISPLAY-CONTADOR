@@ -1,4 +1,4 @@
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:40:32         PAGE  1
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:58:44         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -25,7 +25,7 @@ Message[301]: MESSAGE: (Processor-header file mismatch.  Verify selected process
                       00006 
 Warning[205]: Found directive in column 1. (ORG)
 0000                  00007 ORG 0x00 ;Inicio de programa
-  00000020            00008 DATO EQU 0x20 ;usamos la dirección de memoria 23  
+  00000020            00008 UNIDADES EQU 0x20 ;usamos la dirección de memoria 23  
   00000021            00009 DECENAS EQU 0x21 ;Usamos la direccion de memoria 24
                       00010 
 Warning[203]: Found opcode in column 1. (CLRF)
@@ -57,7 +57,7 @@ Warning[203]: Found opcode in column 1. (MOVWF)
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
 0009   0087           00024 MOVWF TRISC
                       00025 
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:40:32         PAGE  2
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:58:44         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -70,9 +70,9 @@ Warning[203]: Found opcode in column 1. (BCF)
                       00029 
                       00030 ;INICIALIZACION EN CEROS DE MIS VARIABLES
 Warning[203]: Found opcode in column 1. (MOVLW)
-000B   3000           00031 MOVLW b'00000000' ;inicializar variable DATO en ceros
+000B   3000           00031 MOVLW b'00000000' ;inicializar variable UNIDADES en ceros
 Warning[203]: Found opcode in column 1. (MOVWF)
-000C   00A0           00032 MOVWF DATO
+000C   00A0           00032 MOVWF UNIDADES
 Warning[203]: Found opcode in column 1. (MOVLW)
 000D   3000           00033 MOVLW b'00000000' ;inicializar variable DECENAS en ceros
 Warning[203]: Found opcode in column 1. (MOVWF)
@@ -89,7 +89,7 @@ Warning[203]: Found opcode in column 1. (MOVWF)
 0011   0087           00041 MOVWF PORTC ;Mostrar dicho CERO en display del puerto C
                       00042 
                       00043 
-0012                  00044 UNIDADES
+0012                  00044 UNIDADES_CICLO
 Warning[203]: Found opcode in column 1. (BTFSS)
 0012   1C06           00045 BTFSS PORTB,0 ;checar que el BIT 0 este prendido (boton presionado)
 Warning[203]: Found opcode in column 1. (goto)
@@ -100,63 +100,70 @@ Warning[203]: Found opcode in column 1. (GOTO)
 0015   2814           00048 GOTO $-1
                       00049 
 Warning[203]: Found opcode in column 1. (INCF)
-0016   0AA0           00050 INCF DATO,1 ;Incrementar en 1 y almacenarlo en la misma variable DATO
+0016   0AA0           00050 INCF UNIDADES,1 ;Incrementar en 1 y almacenarlo en la misma variable UNIDADES
 Warning[203]: Found opcode in column 1. (MOVF)
-0017   0820           00051 MOVF DATO,W ;copiar registro DATO a registro W
+0017   0820           00051 MOVF UNIDADES,W ;copiar registro DATO a registro W
 Warning[203]: Found opcode in column 1. (CALL)
-0018   201B           00052 CALL TABLA_UNIDADES
+0018   2020           00052 CALL TABLA_UNIDADES
 Warning[203]: Found opcode in column 1. (MOVWF)
 0019   0088           00053 MOVWF PORTD
 Warning[203]: Found opcode in column 1. (GOTO)
-001A   2812           00054 GOTO UNIDADES
+001A   2812           00054 GOTO UNIDADES_CICLO
                       00055 
-                      00056 
-                      00057 
-                      00058 
-                      00059         
-                      00060 ;PCL (Program Counter Low)
-001B                  00061 TABLA_UNIDADES
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:40:32         PAGE  3
+001B                  00056 REINICIAR_UNIDADES
+Warning[203]: Found opcode in column 1. (MOVLW)
+001B   3000           00057 MOVLW b'00000000'
+Warning[203]: Found opcode in column 1. (MOVWF)
+001C   00A0           00058 MOVWF UNIDADES
+Warning[203]: Found opcode in column 1. (MOVLW)
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:58:44         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
+001D   303F           00059 MOVLW b'00111111'
+Warning[203]: Found opcode in column 1. (MOVWF)
+001E   0088           00060 MOVWF PORTD
+Warning[203]: Found opcode in column 1. (GOTO)
+001F   2812           00061 GOTO UNIDADES_CICLO
+                      00062 
+                      00063         
+                      00064 ;PCL (Program Counter Low)
+0020                  00065 TABLA_UNIDADES
 Warning[203]: Found opcode in column 1. (ADDWF)
-001B   0782           00062 ADDWF PCL,F ;Suma el contenido del Registro W a PCL y el resultado se almacena en el mismo registro (PCL
+0020   0782           00066 ADDWF PCL,F ;Suma el contenido del Registro W a PCL y el resultado se almacena en el mismo registro (PCL
                             ).
 Warning[203]: Found opcode in column 1. (RETLW)
-001C   347F           00063 RETLW b'001111111';CERO ;Cuando cumple la ultima instruccion que es "NUEVE", se regresa aqui que seria e
-                            l 10 (1 en  el display de Decenas)
+0021   343F           00067 RETLW b'00111111'     ;CERO 
 Warning[203]: Found opcode in column 1. (RETLW)
-001D   3406           00064 RETLW b'00000110'         ;UNO
+0022   3406           00068 RETLW b'00000110'         ;UNO
 Warning[203]: Found opcode in column 1. (RETLW)
-001E   345B           00065 RETLW b'01011011'         ;DOS
+0023   345B           00069 RETLW b'01011011'         ;DOS
 Warning[203]: Found opcode in column 1. (RETLW)
-001F   344F           00066 RETLW b'01001111'         ;TRES
+0024   344F           00070 RETLW b'01001111'         ;TRES
 Warning[203]: Found opcode in column 1. (RETLW)
-0020   3466           00067 RETLW b'01100110'         ;CUATRO
+0025   3466           00071 RETLW b'01100110'         ;CUATRO
 Warning[203]: Found opcode in column 1. (RETLW)
-0021   346D           00068 RETLW b'01101101'         ;CINCO
+0026   346D           00072 RETLW b'01101101'         ;CINCO
 Warning[203]: Found opcode in column 1. (RETLW)
-0022   347D           00069 RETLW b'01111101'         ;SEIS
+0027   347D           00073 RETLW b'01111101'         ;SEIS
 Warning[203]: Found opcode in column 1. (RETLW)
-0023   3407           00070 RETLW b'00000111'         ;SIETE
+0028   3407           00074 RETLW b'00000111'         ;SIETE
 Warning[203]: Found opcode in column 1. (RETLW)
-0024   347F           00071 RETLW b'01111111'         ;OCHO
+0029   347F           00075 RETLW b'01111111'         ;OCHO
 Warning[203]: Found opcode in column 1. (RETLW)
-0025   3467           00072 RETLW b'01100111'         ;NUEVE
-Warning[203]: Found opcode in column 1. (RETURN)
-0026   0008           00073 RETURN
-                      00074 
-                      00075 
-                      00076 
-                      00077 
+002A   3467           00076 RETLW b'01100111'         ;NUEVE
+Warning[203]: Found opcode in column 1. (GOTO)
+002B   281B           00077 GOTO REINICIAR_UNIDADES
                       00078 
-                      00079 ;---------------------------------------------------------------------------------------------
+                      00079 
+                      00080 
+                      00081 
+                      00082 ;---------------------------------------------------------------------------------------------
 Warning[205]: Found directive in column 1. (END)
-                      00080 END ;DELIMITADOR FIN DEL PROGRAMA
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:40:32         PAGE  4
+                      00083 END ;DELIMITADOR FIN DEL PROGRAMA
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:58:44         PAGE  4
 
 
 SYMBOL TABLE
@@ -214,14 +221,13 @@ CREN                              00000004
 CSRC                              00000007
 D                                 00000005
 DATA_ADDRESS                      00000005
-DATO                              00000020
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:40:32         PAGE  5
+DC                                00000001
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:58:44         PAGE  5
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-DC                                00000001
 DECENAS                           00000021
 D_A                               00000005
 D_NOT_A                           00000005
@@ -274,13 +280,13 @@ OPTION_REG                        00000081
 P                                 00000004
 PCFG0                             00000000
 PCFG1                             00000001
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:40:32         PAGE  6
+PCFG2                             00000002
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:58:44         PAGE  6
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-PCFG2                             00000002
 PCFG3                             00000003
 PCL                               00000002
 PCLATH                            0000000A
@@ -333,13 +339,13 @@ RC8_9                             00000006
 RC9                               00000006
 RCD8                              00000000
 RCEN                              00000003
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:40:32         PAGE  7
+RCIE                              00000005
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:58:44         PAGE  7
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-RCIE                              00000005
 RCIF                              00000005
 RCREG                             0000001A
 RCSTA                             00000018
@@ -356,6 +362,7 @@ RE0                               00000000
 RE1                               00000001
 RE2                               00000002
 READ_WRITE                        00000002
+REINICIAR_UNIDADES                0000001B
 RP0                               00000005
 RP1                               00000006
 RSEN                              00000001
@@ -392,7 +399,7 @@ T1CKPS0                           00000004
 T1CKPS1                           00000005
 T1CON                             00000010
 T1INSYNC                          00000002
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:40:32         PAGE  8
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:58:44         PAGE  8
 
 
 SYMBOL TABLE
@@ -403,7 +410,7 @@ T1SYNC                            00000002
 T2CKPS0                           00000000
 T2CKPS1                           00000001
 T2CON                             00000012
-TABLA_UNIDADES                    0000001B
+TABLA_UNIDADES                    00000020
 TMR0                              00000001
 TMR0IE                            00000005
 TMR0IF                            00000002
@@ -451,7 +458,7 @@ TRISD                             00000088
 TRISD0                            00000000
 TRISD1                            00000001
 TRISD2                            00000002
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:40:32         PAGE  9
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:58:44         PAGE  9
 
 
 SYMBOL TABLE
@@ -477,7 +484,8 @@ TXIF                              00000004
 TXREG                             00000019
 TXSTA                             00000098
 UA                                00000001
-UNIDADES                          00000012
+UNIDADES                          00000020
+UNIDADES_CICLO                    00000012
 W                                 00000000
 WCOL                              00000007
 WR                                00000001
@@ -509,13 +517,13 @@ _IDLOC2                           00002002
 _IDLOC3                           00002003
 _LP_OSC                           00003FFC
 _LVP_OFF                          00003F7F
-_LVP_ON                           00003FFF
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:40:32         PAGE 10
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-9-2024  14:58:44         PAGE 10
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_LVP_ON                           00003FFF
 _PWRTE_OFF                        00003FFF
 _PWRTE_ON                         00003FF7
 _RC_OSC                           00003FFF
@@ -533,16 +541,16 @@ __16F87                           00000001
 
 MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
 
-0000 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXX--------- ----------------
+0000 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXX---- ----------------
 
 All other memory blocks unused.
 
-Program Memory Words Used:    39
-Program Memory Words Free:  4057
+Program Memory Words Used:    44
+Program Memory Words Free:  4052
 
 
 Errors   :     0
-Warnings :    44 reported,     0 suppressed
+Warnings :    49 reported,     0 suppressed
 Messages :     4 reported,     0 suppressed
 
 
