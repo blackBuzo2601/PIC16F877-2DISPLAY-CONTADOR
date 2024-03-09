@@ -36,8 +36,7 @@ MOVWF DECENAS
 
 
 ;Instruccion para que al correr el programa comience mostrando el CERO INICIAL.
-MOVF DATO,W ;mover 00000000 a W
-CALL TABLA_UNIDADES;Llamando a TABLA_UNIDADES para la instrucción que "dibuja" Cero en nuestro DISPLAY
+MOVLW b'00111111' ;Dibujar Cero en el display
 MOVWF PORTD ;Mostrar dicho CERO en display del puerto D
 MOVWF PORTC ;Mostrar dicho CERO en display del puerto C
 
@@ -52,15 +51,16 @@ INCF DATO,1 ;Incrementar en 1 y almacenarlo en la misma variable DATO
 MOVF DATO,W ;copiar registro DATO a registro W
 CALL TABLA_UNIDADES
 MOVWF PORTD
-
 	GOTO UNIDADES
+
+
 
 
 	
 ;PCL (Program Counter Low)
 TABLA_UNIDADES
 ADDWF PCL,F ;Suma el contenido del Registro W a PCL y el resultado se almacena en el mismo registro (PCL).
-RETLW b'00111111'     ;CERO
+GOTO ALMACENA_DECENAS ;Cuando cumple la ultima instruccion que es Nueve, se regresa aqui que seria el 10 (1 en  el display de Decenas)
 RETLW b'00000110' 	  ;UNO
 RETLW b'01011011' 	  ;DOS
 RETLW b'01001111' 	  ;TRES
@@ -84,7 +84,10 @@ RETLW b'01111111' 	  ;OCHO
 RETLW b'01100111'	  ;NUEVE
 
 
-ALMACENADOR_DECENAS
+ALMACENA_DECENAS
+INCF DECENAS,1 ;incrementar nuestra variable DECENAS en uno (00000001),(00000010),(00000011)...
+MOVF DECENAS,W ;Mover 00000001 a W
+MOVWF PORTC
 
 
 
