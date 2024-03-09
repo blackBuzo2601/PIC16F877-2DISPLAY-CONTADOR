@@ -1,6 +1,6 @@
 ;------------------------------------------------------------------------------------
 ;CONTADOR BINARIO 
-;------------------------------------------------------------------------------------
+;----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 LIST p=16F877
 INCLUDE <P16F877.INC>
 
@@ -24,21 +24,20 @@ MOVLW b'00000000' ;establecer todos los pines del puerto C como SALIDA (Serán ma
 MOVWF TRISC
 
 BCF STATUS,RP0 ;limpiar RP0 para regresar al BANCO 0.
-
-
+;----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ;INICIALIZACION EN CEROS DE MIS VARIABLES
 MOVLW b'00000000' ;inicializar variable UNIDADES en ceros
 MOVWF UNIDADES
 MOVLW b'00000000' ;inicializar variable DECENAS en ceros
 MOVWF DECENAS
-;--------------------------------------------------------
+;----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-;Instruccion para que al correr el programa comience mostrando el CERO INICIAL.
+;MOSTRAR EL "CERO" INICIAL EN AMBOS DISPLAY AL INICIAR EL PROGRAMA
 MOVLW b'00111111' ;Dibujar Cero en el display
 MOVWF PORTD ;Mostrar dicho CERO en display del puerto D
 MOVWF PORTC ;Mostrar dicho CERO en display del puerto C
+;----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 UNIDADES_CICLO
@@ -53,6 +52,7 @@ CALL TABLA_UNIDADES
 MOVWF PORTD
 GOTO UNIDADES_CICLO
 
+
 REINICIAR_UNIDADES
 MOVLW b'00000000' ;reiniciar en ceros variable UNIDADES
 MOVWF UNIDADES
@@ -65,7 +65,8 @@ CALL TABLA_DECENAS ;llamar a Tabla Decenas... para desplegar la decena correspon
 MOVWF PORTC ;moverlo al PUERTO C encargado de las DECENAS
 GOTO UNIDADES_CICLO
 
-	
+
+;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;PCL (Program Counter Low)
 TABLA_UNIDADES
 ADDWF PCL,F ;Suma el contenido del Registro W a PCL y el resultado se almacena en el mismo registro (PCL).
@@ -94,9 +95,10 @@ RETLW b'01111101' 	  ;SEIS
 RETLW b'00000111'	  ;SIETE
 RETLW b'01111111' 	  ;OCHO
 RETLW b'01100111'	  ;NUEVE
-;GOTO REINICIAR_UNIDADES ;DIEZ
 
 
-;---------------------------------------------------------------------------------------------
+
+
+
 END ;DELIMITADOR FIN DEL PROGRAMA
 
