@@ -1,5 +1,5 @@
 MPLINK 4.49, Linker
-Linker Map File - Created Sat Mar 09 13:35:49 2024
+Linker Map File - Created Sat Mar 09 13:43:57 2024
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
@@ -23,14 +23,14 @@ Linker Map File - Created Sat Mar 09 13:35:49 2024
       ALMACENADOR_DECENAS   0x000031    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
             TABLA_DECENAS   0x000027    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
            TABLA_UNIDADES   0x00001c    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
-                 UNIDADES   0x000012    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
+                 UNIDADES   0x000013    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
 
 
 
                               Symbols - Sorted by Address
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-                 UNIDADES   0x000012    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
+                 UNIDADES   0x000013    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
            TABLA_UNIDADES   0x00001c    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
             TABLA_DECENAS   0x000027    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
       ALMACENADOR_DECENAS   0x000031    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm

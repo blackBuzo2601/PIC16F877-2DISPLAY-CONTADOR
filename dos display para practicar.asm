@@ -27,17 +27,19 @@ BCF STATUS,RP0 ;limpiar RP0 para regresar al BANCO 0.
 
 
 
-
+;INICIALIZACION EN CEROS DE MIS VARIABLES
 MOVLW b'00000000' ;inicializar variable DATO en ceros
 MOVWF DATO
 MOVLW b'00000000' ;inicializar variable DECENAS en ceros
 MOVWF DECENAS
+;--------------------------------------------------------
 
 
 ;Instruccion para que al correr el programa comience mostrando el CERO INICIAL.
 MOVF DATO,W ;mover 00000000 a W
-CALL TABLA_UNIDADES;llamar a subrutina
-MOVWF PORTD
+CALL TABLA_UNIDADES;Llamando a TABLA_UNIDADES para la instrucción que "dibuja" Cero en nuestro DISPLAY
+MOVWF PORTD ;Mostrar dicho CERO en display del puerto D
+MOVWF PORTC ;Mostrar dicho CERO en display del puerto C
 
 
 UNIDADES
@@ -50,7 +52,6 @@ INCF DATO,1 ;Incrementar en 1 y almacenarlo en la misma variable DATO
 MOVF DATO,W ;copiar registro DATO a registro W
 CALL TABLA_UNIDADES
 MOVWF PORTD
-MOVWF PORTC
 
 	GOTO UNIDADES
 
