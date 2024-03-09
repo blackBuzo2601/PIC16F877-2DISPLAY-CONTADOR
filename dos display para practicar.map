@@ -1,27 +1,25 @@
 MPLINK 4.49, Linker
-Linker Map File - Created Sat Mar 09 13:54:42 2024
+Linker Map File - Created Sat Mar 09 14:40:33 2024
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
                 ---------  ---------  ---------  ---------  ---------
                    .org_0       code   0x000000    program   0x000000
-                   .org_1       code   0x000000    program   0x000066
+                   .org_1       code   0x000000    program   0x00004e
 
 
 
                               Program Memory Usage 
                                Start         End      
                            ---------   ---------      
-                            0x000000    0x000032      
-            51 out of 4359 program addresses used, program memory utilization is 1%
+                            0x000000    0x000026      
+            39 out of 4359 program addresses used, program memory utilization is 0%
 
 
 
                               Symbols - Sorted by Name
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-         ALMACENA_DECENAS   0x000030    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
-            TABLA_DECENAS   0x000026    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
            TABLA_UNIDADES   0x00001b    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
                  UNIDADES   0x000012    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
 
@@ -32,7 +30,5 @@ Linker Map File - Created Sat Mar 09 13:54:42 2024
                 ---------  ---------  ---------  --------- ---------                
                  UNIDADES   0x000012    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
            TABLA_UNIDADES   0x00001b    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
-            TABLA_DECENAS   0x000026    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
-         ALMACENA_DECENAS   0x000030    program     static C:\Users\Lenovo\Desktop\PIC16F877-ASM-PRUEBAS\dos display para practicar.asm
 
 

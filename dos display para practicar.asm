@@ -51,7 +51,7 @@ INCF DATO,1 ;Incrementar en 1 y almacenarlo en la misma variable DATO
 MOVF DATO,W ;copiar registro DATO a registro W
 CALL TABLA_UNIDADES
 MOVWF PORTD
-	GOTO UNIDADES
+GOTO UNIDADES
 
 
 
@@ -60,7 +60,7 @@ MOVWF PORTD
 ;PCL (Program Counter Low)
 TABLA_UNIDADES
 ADDWF PCL,F ;Suma el contenido del Registro W a PCL y el resultado se almacena en el mismo registro (PCL).
-GOTO ALMACENA_DECENAS ;Cuando cumple la ultima instruccion que es Nueve, se regresa aqui que seria el 10 (1 en  el display de Decenas)
+RETLW b'001111111';CERO ;Cuando cumple la ultima instruccion que es "NUEVE", se regresa aqui que seria el 10 (1 en  el display de Decenas)
 RETLW b'00000110' 	  ;UNO
 RETLW b'01011011' 	  ;DOS
 RETLW b'01001111' 	  ;TRES
@@ -70,38 +70,12 @@ RETLW b'01111101' 	  ;SEIS
 RETLW b'00000111'	  ;SIETE
 RETLW b'01111111' 	  ;OCHO
 RETLW b'01100111'	  ;NUEVE
-
-TABLA_DECENAS
-RETLW b'00111111'     ;CERO
-RETLW b'00000110' 	  ;UNO
-RETLW b'01011011' 	  ;DOS
-RETLW b'01001111' 	  ;TRES
-RETLW b'01100110'	  ;CUATRO
-RETLW b'01101101' 	  ;CINCO
-RETLW b'01111101' 	  ;SEIS
-RETLW b'00000111'	  ;SIETE
-RETLW b'01111111' 	  ;OCHO
-RETLW b'01100111'	  ;NUEVE
-
-
-ALMACENA_DECENAS
-INCF DECENAS,1 ;incrementar nuestra variable DECENAS en uno (00000001),(00000010),(00000011)...
-MOVF DECENAS,W ;Mover 00000001 a W
-MOVWF PORTC
+RETURN
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
+;---------------------------------------------------------------------------------------------
 END ;DELIMITADOR FIN DEL PROGRAMA
 
