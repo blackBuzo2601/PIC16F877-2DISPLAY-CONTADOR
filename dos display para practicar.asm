@@ -36,11 +36,11 @@ MOVWF DECENAS
 
 ;Instruccion para que al correr el programa comience mostrando el CERO INICIAL.
 MOVF DATO,W ;mover 00000000 a W
-CALL TABLA;llamar a subrutina
+CALL TABLA_UNIDADES;llamar a subrutina
 MOVWF PORTD
 
 
-INICIO
+UNIDADES
 BTFSS PORTB,0 ;checar que el BIT 0 este prendido (boton presionado)
 goto $-1
 BTFSC PORTB,0 ;checar que el bit 0 este apagado (boton liberado)
@@ -48,15 +48,16 @@ GOTO $-1
 
 INCF DATO,1 ;Incrementar en 1 y almacenarlo en la misma variable DATO
 MOVF DATO,W ;copiar registro DATO a registro W
-CALL TABLA
+CALL TABLA_UNIDADES
 MOVWF PORTD
+MOVWF PORTC
 
-	GOTO INICIO
+	GOTO UNIDADES
 
 
 	
 ;PCL (Program Counter Low)
-TABLA
+TABLA_UNIDADES
 ADDWF PCL,F ;Suma el contenido del Registro W a PCL y el resultado se almacena en el mismo registro (PCL).
 RETLW b'00111111'     ;CERO
 RETLW b'00000110' 	  ;UNO
