@@ -5,8 +5,11 @@ LIST p=16F877
 INCLUDE <P16F877.INC>
 
 ORG 0x00 ;Inicio de programa
-UNIDADES EQU 0x20 ;usamos la dirección de memoria 23  
+UNIDADES EQU 0x20 ;usamos la dirección de memoria 23 
 DECENAS  EQU 0x21 ;Usamos la direccion de memoria 24
+CONTADOR0 EQU 0x22
+CONTADOR1 EQU 0x23
+CONTADOR2 EQU 0x24 ;VARIABLES
 
 CLRF PORTC ;limpiar registro PORTC
 CLRF PORTB ;limpiar registro PORTB
@@ -33,42 +36,45 @@ MOVLW b'00000000' ;inicializar variable DECENAS en ceros
 MOVWF DECENAS
 ;----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+BTFSS PORTB,0
+GOTO $-1
+BTFSC PORTB,0
+GOTO $-1
 ;MOSTRAR EL "CERO" INICIAL EN AMBOS DISPLAY AL INICIAR EL PROGRAMA
 MOVLW b'00111111' ;Dibujar Cero en el display
 MOVWF PORTD ;Mostrar dicho CERO en display del puerto D
 MOVWF PORTC ;Mostrar dicho CERO en display del puerto C
 ;----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CALL SUBRUT 
 
-
-UNIDADES_CICLO
-BTFSS PORTB,0 ;checar que el BIT 0 este prendido (boton presionado)
-goto $-1
-BTFSC PORTB,0 ;checar que el bit 0 este apagado (boton liberado)
-GOTO $-1
+CICLO
 
 INCF UNIDADES,1 ;Incrementar en 1 y almacenarlo en la misma variable UNIDADES
 MOVF UNIDADES,W ;copiar registro DATO a registro W
-CALL TABLA_UNIDADES
+CALL TABLA
 MOVWF PORTD
-GOTO UNIDADES_CICLO
+CALL SUBRUT
+GOTO CICLO
 
 
 REINICIAR_UNIDADES
-MOVLW b'00000000' ;reiniciar en ceros variable UNIDADES
-MOVWF UNIDADES
+CLRF UNIDADES ;Dejar en 00000000 variable UNIDADES
 MOVLW b'00111111' ;dibujar Cero en display nuevamente
 MOVWF PORTD
 
+
 INCF DECENAS,1 ;incrementar en 1 variable DECENAS
 MOVF DECENAS,W ;mover 00000001,00000010,00000011... etc a W
-CALL TABLA_DECENAS ;llamar a Tabla Decenas... para desplegar la decena correspondiente
+CALL TABLA ;llamar a Tabla Decenas... para desplegar la decena correspondiente
 MOVWF PORTC ;moverlo al PUERTO C encargado de las DECENAS
-GOTO UNIDADES_CICLO
+CALL SUBRUT
+GOTO CICLO
 
 
 ;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;PCL (Program Counter Low)
-TABLA_UNIDADES
+TABLA
 ADDWF PCL,F ;Suma el contenido del Registro W a PCL y el resultado se almacena en el mismo registro (PCL).
 RETLW b'00111111'     ;CERO 
 RETLW b'00000110' 	  ;UNO
@@ -83,18 +89,33 @@ RETLW b'01100111'	  ;NUEVE
 GOTO REINICIAR_UNIDADES ;DIEZ
 
 
-TABLA_DECENAS
-ADDWF PCL,F ;Suma el contenido del Registro W a PCL y el resultado se almacena en el mismo registro (PCL)
-RETLW b'00111111'     ;CERO 
-RETLW b'00000110' 	  ;UNO
-RETLW b'01011011' 	  ;DOS
-RETLW b'01001111' 	  ;TRES
-RETLW b'01100110'	  ;CUATRO
-RETLW b'01101101' 	  ;CINCO
-RETLW b'01111101' 	  ;SEIS
-RETLW b'00000111'	  ;SIETE
-RETLW b'01111111' 	  ;OCHO
-RETLW b'01100111'	  ;NUEVE
+
+
+;BLOQUE SUBRUTINA
+SUBRUT ;Esto es una SUBRUTINA, estas se llaman con CALL
+	MOVLW 0x2; EN decimal vale 9
+	MOVWF CONTADOR2
+DECRE3
+	MOVLW 0x64 ;En decimal vale 100
+	MOVWF CONTADOR1
+DECRE2
+	MOVLW 0x64 ;En decimal vale 100
+	MOVWF CONTADOR0
+
+;AQUI SE REALIZARA EL CONTEO REGRESIVO DE LOS VALOREES QUE ESTAMOS TRABAJANDO
+				;palabra reservada "DECFSZ" decrementa BIT por BIT
+DECRE1				
+	DECFSZ CONTADOR0,1  ;Como CONTADOR0 vale 100, va de 100,99,88 etc...
+	GOTO   DECRE1  
+
+	DECFSZ CONTADOR1,1 ;Como CONTADOR1 vale 100, va de 100,99,88 etc...
+	GOTO   DECRE2
+
+	DECFSZ CONTADOR2,1 ;como CONTADOR2 vale 33, va de 33,32,31...
+	GOTO   DECRE3
+
+	RETURN ;Con RETURN regresamos al codigo original donde se habia quedado, osea
+		   ;justo después de llamar SUBRUTINA con CALL SUBRUTINA
 
 
 
