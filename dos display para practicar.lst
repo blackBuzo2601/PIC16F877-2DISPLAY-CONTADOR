@@ -1,4 +1,4 @@
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:30:46         PAGE  1
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:56:30         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -26,7 +26,7 @@ Message[301]: MESSAGE: (Processor-header file mismatch.  Verify selected process
                       00006 
 Warning[205]: Found directive in column 1. (ORG)
 0000                  00007 ORG 0x00 ;Inicio de programa
-  00000020            00008 UNIDADES EQU 0x20 ;usamos la dirección de memoria 23 
+  00000020            00008 UNIDADES EQU 0x20 ;usamos la dirección de memoria 23  
   00000021            00009 DECENAS  EQU 0x21 ;Usamos la direccion de memoria 24
   00000022            00010 CONTADOR0 EQU 0x22
   00000023            00011 CONTADOR1 EQU 0x23
@@ -57,7 +57,7 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 0007   0088           00025 MOVWF TRISD
 Warning[203]: Found opcode in column 1. (MOVLW)
 0008   3000           00026 MOVLW b'00000000' ;establecer todos los pines del puerto C como SALIDA (Serán manipulados desde dentro)
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:30:46         PAGE  2
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:56:30         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -71,28 +71,28 @@ Warning[203]: Found opcode in column 1. (BCF)
 000A   1283           00029 BCF STATUS,RP0 ;limpiar RP0 para regresar al BANCO 0.
                       00030 ;-------------------------------------------------------------------------------------------------------
                             ------------------------------------------------------------------------------------------------
-                      00031 
-                      00032 ;INICIALIZACION EN CEROS DE MIS VARIABLES
-Warning[203]: Found opcode in column 1. (MOVLW)
-000B   3000           00033 MOVLW b'00000000' ;inicializar variable UNIDADES en ceros
-Warning[203]: Found opcode in column 1. (MOVWF)
-000C   00A0           00034 MOVWF UNIDADES
-Warning[203]: Found opcode in column 1. (MOVLW)
-000D   3000           00035 MOVLW b'00000000' ;inicializar variable DECENAS en ceros
-Warning[203]: Found opcode in column 1. (MOVWF)
-000E   00A1           00036 MOVWF DECENAS
-                      00037 ;-------------------------------------------------------------------------------------------------------
-                            ------------------------------------------------------------------------------------------------
-                      00038 
-                      00039 
 Warning[203]: Found opcode in column 1. (BTFSS)
-000F   1C06           00040 BTFSS PORTB,0
+000B   1C06           00031 BTFSS PORTB,0
 Warning[203]: Found opcode in column 1. (GOTO)
-0010   280F           00041 GOTO $-1
+000C   280B           00032 GOTO $-1
 Warning[203]: Found opcode in column 1. (BTFSC)
-0011   1806           00042 BTFSC PORTB,0
+000D   1806           00033 BTFSC PORTB,0
 Warning[203]: Found opcode in column 1. (GOTO)
-0012   2811           00043 GOTO $-1
+000E   280D           00034 GOTO $-1
+                      00035 
+000F                  00036 INICIO
+                      00037 ;INICIALIZACION EN CEROS DE MIS VARIABLES
+Warning[203]: Found opcode in column 1. (MOVLW)
+000F   3000           00038 MOVLW b'00000000' ;inicializar variable UNIDADES en ceros
+Warning[203]: Found opcode in column 1. (MOVWF)
+0010   00A0           00039 MOVWF UNIDADES
+Warning[203]: Found opcode in column 1. (MOVLW)
+0011   3000           00040 MOVLW b'00000000' ;inicializar variable DECENAS en ceros
+Warning[203]: Found opcode in column 1. (MOVWF)
+0012   00A1           00041 MOVWF DECENAS
+                      00042 ;-------------------------------------------------------------------------------------------------------
+                            ------------------------------------------------------------------------------------------------
+                      00043 
                       00044 ;MOSTRAR EL "CERO" INICIAL EN AMBOS DISPLAY AL INICIAR EL PROGRAMA
 Warning[203]: Found opcode in column 1. (MOVLW)
 0013   303F           00045 MOVLW b'00111111' ;Dibujar Cero en el display
@@ -103,125 +103,157 @@ Warning[203]: Found opcode in column 1. (MOVWF)
                       00048 ;-------------------------------------------------------------------------------------------------------
                             ------------------------------------------------------------------------------------------------
 Warning[203]: Found opcode in column 1. (CALL)
-0016   2032           00049 CALL SUBRUT 
+0016   203E           00049 CALL SUBRUT
                       00050 
 0017                  00051 CICLO
-                      00052 
+                      00052 ;BTFSS PORTB,0 ;checar que el BIT 0 este prendido (boton presionado)
+                      00053 ;goto $-1
+                      00054 ;BTFSC PORTB,0 ;checar que el bit 0 este apagado (boton liberado)
+                      00055 ;GOTO $-1
 Warning[203]: Found opcode in column 1. (INCF)
-0017   0AA0           00053 INCF UNIDADES,1 ;Incrementar en 1 y almacenarlo en la misma variable UNIDADES
+0017   0AA0           00056 INCF UNIDADES,1 ;Incrementar en 1 y almacenarlo en la misma variable UNIDADES
 Warning[203]: Found opcode in column 1. (MOVF)
-0018   0820           00054 MOVF UNIDADES,W ;copiar registro DATO a registro W
+0018   0820           00057 MOVF UNIDADES,W ;copiar registro DATO a registro W
 Warning[203]: Found opcode in column 1. (CALL)
-0019   2026           00055 CALL TABLA
-Warning[203]: Found opcode in column 1. (MOVWF)
-001A   0088           00056 MOVWF PORTD
-Warning[203]: Found opcode in column 1. (CALL)
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:30:46         PAGE  3
+0019   2026           00058 CALL TABLA
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:56:30         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-001B   2032           00057 CALL SUBRUT
+Warning[203]: Found opcode in column 1. (MOVWF)
+001A   0088           00059 MOVWF PORTD
+Warning[203]: Found opcode in column 1. (CALL)
+001B   203E           00060 CALL SUBRUT
 Warning[203]: Found opcode in column 1. (GOTO)
-001C   2817           00058 GOTO CICLO
-                      00059 
-                      00060 
-001D                  00061 REINICIAR_UNIDADES
+001C   2817           00061 GOTO CICLO
+                      00062 
+                      00063 
+001D                  00064 REINICIAR_UNIDADES
 Warning[203]: Found opcode in column 1. (CLRF)
-001D   01A0           00062 CLRF UNIDADES ;Dejar en 00000000 variable UNIDADES
+001D   01A0           00065 CLRF UNIDADES ;Dejar en 00000000 variable UNIDADES
 Warning[203]: Found opcode in column 1. (MOVLW)
-001E   303F           00063 MOVLW b'00111111' ;dibujar Cero en display nuevamente
+001E   303F           00066 MOVLW b'00111111' ;dibujar Cero en display nuevamente
 Warning[203]: Found opcode in column 1. (MOVWF)
-001F   0088           00064 MOVWF PORTD
-                      00065 
-                      00066 
+001F   0088           00067 MOVWF PORTD
 Warning[203]: Found opcode in column 1. (INCF)
-0020   0AA1           00067 INCF DECENAS,1 ;incrementar en 1 variable DECENAS
+0020   0AA1           00068 INCF DECENAS,1 ;incrementar en 1 variable DECENAS
 Warning[203]: Found opcode in column 1. (MOVF)
-0021   0821           00068 MOVF DECENAS,W ;mover 00000001,00000010,00000011... etc a W
+0021   0821           00069 MOVF DECENAS,W ;mover 00000001,00000010,00000011... etc a W
 Warning[203]: Found opcode in column 1. (CALL)
-0022   2026           00069 CALL TABLA ;llamar a Tabla Decenas... para desplegar la decena correspondiente
+0022   2032           00070 CALL TABLA_DECENAS ;llamar a Tabla Decenas... para desplegar la decena correspondiente
 Warning[203]: Found opcode in column 1. (MOVWF)
-0023   0087           00070 MOVWF PORTC ;moverlo al PUERTO C encargado de las DECENAS
+0023   0087           00071 MOVWF PORTC ;moverlo al PUERTO C encargado de las DECENAS
 Warning[203]: Found opcode in column 1. (CALL)
-0024   2032           00071 CALL SUBRUT
+0024   203E           00072 CALL SUBRUT
 Warning[203]: Found opcode in column 1. (GOTO)
-0025   2817           00072 GOTO CICLO
-                      00073 
+0025   2817           00073 GOTO CICLO
                       00074 
-                      00075 ;-------------------------------------------------------------------------------------------------------
+                      00075 
+                      00076 ;-------------------------------------------------------------------------------------------------------
                             ----------------------------------------------------------------
-                      00076 ;PCL (Program Counter Low)
-0026                  00077 TABLA
+                      00077 ;PCL (Program Counter Low)
+0026                  00078 TABLA
 Warning[203]: Found opcode in column 1. (ADDWF)
-0026   0782           00078 ADDWF PCL,F ;Suma el contenido del Registro W a PCL y el resultado se almacena en el mismo registro (PCL
+0026   0782           00079 ADDWF PCL,F ;Suma el contenido del Registro W a PCL y el resultado se almacena en el mismo registro (PCL
                             ).
 Warning[203]: Found opcode in column 1. (RETLW)
-0027   343F           00079 RETLW b'00111111'     ;CERO 
+0027   343F           00080 RETLW b'00111111'     ;CERO 
 Warning[203]: Found opcode in column 1. (RETLW)
-0028   3406           00080 RETLW b'00000110'         ;UNO
+0028   3406           00081 RETLW b'00000110'         ;UNO
 Warning[203]: Found opcode in column 1. (RETLW)
-0029   345B           00081 RETLW b'01011011'         ;DOS
+0029   345B           00082 RETLW b'01011011'         ;DOS
 Warning[203]: Found opcode in column 1. (RETLW)
-002A   344F           00082 RETLW b'01001111'         ;TRES
+002A   344F           00083 RETLW b'01001111'         ;TRES
 Warning[203]: Found opcode in column 1. (RETLW)
-002B   3466           00083 RETLW b'01100110'         ;CUATRO
+002B   3466           00084 RETLW b'01100110'         ;CUATRO
 Warning[203]: Found opcode in column 1. (RETLW)
-002C   346D           00084 RETLW b'01101101'         ;CINCO
+002C   346D           00085 RETLW b'01101101'         ;CINCO
 Warning[203]: Found opcode in column 1. (RETLW)
-002D   347D           00085 RETLW b'01111101'         ;SEIS
+002D   347D           00086 RETLW b'01111101'         ;SEIS
 Warning[203]: Found opcode in column 1. (RETLW)
-002E   3407           00086 RETLW b'00000111'         ;SIETE
+002E   3407           00087 RETLW b'00000111'         ;SIETE
 Warning[203]: Found opcode in column 1. (RETLW)
-002F   347F           00087 RETLW b'01111111'         ;OCHO
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:30:46         PAGE  4
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:56:30         PAGE  4
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
+002F   347F           00088 RETLW b'01111111'         ;OCHO
 Warning[203]: Found opcode in column 1. (RETLW)
-0030   3467           00088 RETLW b'01100111'         ;NUEVE
+0030   3467           00089 RETLW b'01100111'         ;NUEVE
 Warning[203]: Found opcode in column 1. (GOTO)
-0031   281D           00089 GOTO REINICIAR_UNIDADES ;DIEZ
-                      00090 
+0031   281D           00090 GOTO REINICIAR_UNIDADES ;DIEZ
                       00091 
-                      00092 
-                      00093 
-                      00094 ;BLOQUE SUBRUTINA
-0032                  00095 SUBRUT ;Esto es una SUBRUTINA, estas se llaman con CALL
-0032   3002           00096         MOVLW 0x2; EN decimal vale 9
-0033   00A4           00097         MOVWF CONTADOR2
-0034                  00098 DECRE3
-0034   3064           00099         MOVLW 0x64 ;En decimal vale 100
-0035   00A3           00100         MOVWF CONTADOR1
-0036                  00101 DECRE2
-0036   3064           00102         MOVLW 0x64 ;En decimal vale 100
-0037   00A2           00103         MOVWF CONTADOR0
-                      00104 
-                      00105 ;AQUI SE REALIZARA EL CONTEO REGRESIVO DE LOS VALOREES QUE ESTAMOS TRABAJANDO
-                      00106                                 ;palabra reservada "DECFSZ" decrementa BIT por BIT
-0038                  00107 DECRE1                          
-0038   0BA2           00108         DECFSZ CONTADOR0,1  ;Como CONTADOR0 vale 100, va de 100,99,88 etc...
-0039   2838           00109         GOTO   DECRE1  
-                      00110 
-003A   0BA3           00111         DECFSZ CONTADOR1,1 ;Como CONTADOR1 vale 100, va de 100,99,88 etc...
-003B   2836           00112         GOTO   DECRE2
-                      00113 
-003C   0BA4           00114         DECFSZ CONTADOR2,1 ;como CONTADOR2 vale 33, va de 33,32,31...
-003D   2834           00115         GOTO   DECRE3
+0032                  00092 TABLA_DECENAS
+Warning[203]: Found opcode in column 1. (ADDWF)
+0032   0782           00093 ADDWF PCL,F ;Suma el contenido del Registro W a PCL y el resultado se almacena en el mismo registro (PCL
+                            ).
+Warning[203]: Found opcode in column 1. (RETLW)
+0033   343F           00094 RETLW b'00111111'     ;CERO 
+Warning[203]: Found opcode in column 1. (RETLW)
+0034   3406           00095 RETLW b'00000110'         ;UNO
+Warning[203]: Found opcode in column 1. (RETLW)
+0035   345B           00096 RETLW b'01011011'         ;DOS
+Warning[203]: Found opcode in column 1. (RETLW)
+0036   344F           00097 RETLW b'01001111'         ;TRES
+Warning[203]: Found opcode in column 1. (RETLW)
+0037   3466           00098 RETLW b'01100110'         ;CUATRO
+Warning[203]: Found opcode in column 1. (RETLW)
+0038   346D           00099 RETLW b'01101101'         ;CINCO
+Warning[203]: Found opcode in column 1. (RETLW)
+0039   347D           00100 RETLW b'01111101'         ;SEIS
+Warning[203]: Found opcode in column 1. (RETLW)
+003A   3407           00101 RETLW b'00000111'         ;SIETE
+Warning[203]: Found opcode in column 1. (RETLW)
+003B   347F           00102 RETLW b'01111111'         ;OCHO
+Warning[203]: Found opcode in column 1. (RETLW)
+003C   3467           00103 RETLW b'01100111'         ;NUEVE
+Warning[203]: Found opcode in column 1. (GOTO)
+003D   280F           00104 GOTO INICIO ;DIEZ
+                      00105 
+                      00106 ;--------------BLOQUE DE DELAY PARA LOS SEGUNDOS--------------------------------------------------------
+                            --
+003E                  00107 SUBRUT ;Esto es una SUBRUTINA, estas se llaman con CALL
+003E   3007           00108         MOVLW 0x7; EN decimal vale 9
+003F   00A4           00109         MOVWF CONTADOR2
+0040                  00110 DECRE3
+0040   3064           00111         MOVLW 0x64 ;En decimal vale 100
+0041   00A3           00112         MOVWF CONTADOR1
+0042                  00113 DECRE2
+0042   3064           00114         MOVLW 0x64 ;En decimal vale 100
+0043   00A2           00115         MOVWF CONTADOR0
                       00116 
-003E   0008           00117         RETURN ;Con RETURN regresamos al codigo original donde se habia quedado, osea
-                      00118                    ;justo después de llamar SUBRUTINA con CALL SUBRUTINA
-                      00119 
-                      00120 
-                      00121 
+                      00117 ;AQUI SE REALIZARA EL CONTEO REGRESIVO DE LOS VALOREES QUE ESTAMOS TRABAJANDO
+                      00118                                 ;palabra reservada "DECFSZ" decrementa BIT por BIT
+0044                  00119 DECRE1                          
+0044   0BA2           00120         DECFSZ CONTADOR0,1  ;Como CONTADOR0 vale 100, va de 100,99,88 etc...
+0045   2844           00121         GOTO   DECRE1  
                       00122 
-                      00123 
+0046   0BA3           00123         DECFSZ CONTADOR1,1 ;Como CONTADOR1 vale 100, va de 100,99,88 etc...
+0047   2842           00124         GOTO   DECRE2
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:56:30         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00125 
+0048   0BA4           00126         DECFSZ CONTADOR2,1 ;como CONTADOR2 vale 33, va de 33,32,31...
+0049   2840           00127         GOTO   DECRE3
+                      00128 
+004A   0008           00129         RETURN ;Con RETURN regresamos al codigo original donde se habia quedado, osea
+                      00130                    ;justo después de llamar SUBRUTINA con CALL SUBRUTINA
+                      00131 
+                      00132 
+                      00133 
+                      00134 
+                      00135 
 Warning[205]: Found directive in column 1. (END)
-                      00124 END ;DELIMITADOR FIN DEL PROGRAMA
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:30:46         PAGE  5
+                      00136 END ;DELIMITADOR FIN DEL PROGRAMA
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:56:30         PAGE  6
 
 
 SYMBOL TABLE
@@ -280,7 +312,7 @@ CONTADOR0                         00000022
 CONTADOR1                         00000023
 CONTADOR2                         00000024
 CREN                              00000004
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:30:46         PAGE  6
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:56:30         PAGE  7
 
 
 SYMBOL TABLE
@@ -291,9 +323,9 @@ D                                 00000005
 DATA_ADDRESS                      00000005
 DC                                00000001
 DECENAS                           00000021
-DECRE1                            00000038
-DECRE2                            00000036
-DECRE3                            00000034
+DECRE1                            00000044
+DECRE2                            00000042
+DECRE3                            00000040
 D_A                               00000005
 D_NOT_A                           00000005
 EEADR                             0000010D
@@ -320,6 +352,7 @@ I2C_STOP                          00000004
 IBF                               00000007
 IBOV                              00000005
 INDF                              00000000
+INICIO                            0000000F
 INTCON                            0000000B
 INTE                              00000004
 INTEDG                            00000006
@@ -338,13 +371,13 @@ NOT_T1SYNC                        00000002
 NOT_TO                            00000004
 NOT_TX8                           00000006
 NOT_W                             00000002
-NOT_WRITE                         00000002
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:30:46         PAGE  7
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:56:30         PAGE  8
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+NOT_WRITE                         00000002
 OBF                               00000006
 OERR                              00000001
 OPTION_REG                        00000081
@@ -397,13 +430,13 @@ RC1                               00000001
 RC2                               00000002
 RC3                               00000003
 RC4                               00000004
-RC5                               00000005
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:30:46         PAGE  8
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:56:30         PAGE  9
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+RC5                               00000005
 RC6                               00000006
 RC7                               00000007
 RC8_9                             00000006
@@ -455,14 +488,14 @@ SSPM3                             00000003
 SSPOV                             00000006
 SSPSTAT                           00000094
 STATUS                            00000003
-SUBRUT                            00000032
-SYNC                              00000004
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:30:46         PAGE  9
+SUBRUT                            0000003E
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:56:30         PAGE 10
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+SYNC                              00000004
 T0CS                              00000005
 T0IE                              00000005
 T0IF                              00000002
@@ -477,6 +510,7 @@ T2CKPS0                           00000000
 T2CKPS1                           00000001
 T2CON                             00000012
 TABLA                             00000026
+TABLA_DECENAS                     00000032
 TMR0                              00000001
 TMR0IE                            00000005
 TMR0IF                            00000002
@@ -514,14 +548,14 @@ TRISB7                            00000007
 TRISC                             00000087
 TRISC0                            00000000
 TRISC1                            00000001
-TRISC2                            00000002
-TRISC3                            00000003
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:30:46         PAGE 10
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:56:30         PAGE 11
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TRISC2                            00000002
+TRISC3                            00000003
 TRISC4                            00000004
 TRISC5                            00000005
 TRISC6                            00000006
@@ -573,14 +607,14 @@ _DEBUG_ON                         000037FF
 _DEVID1                           00002006
 _FOSC_EXTRC                       00003FFF
 _FOSC_HS                          00003FFE
-_FOSC_LP                          00003FFC
-_FOSC_XT                          00003FFD
-MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:30:46         PAGE 11
+MPASM  5.51    DOS DISPLAY PARA PRACTICAR.ASM   3-15-2024  2:56:30         PAGE 12
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
 _HS_OSC                           00003FFE
 _IDLOC0                           00002000
 _IDLOC1                           00002001
@@ -606,16 +640,17 @@ __16F87                           00000001
 
 MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
 
-0000 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXX-
+0000 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0040 : XXXXXXXXXXX----- ---------------- ---------------- ----------------
 
 All other memory blocks unused.
 
-Program Memory Words Used:    63
-Program Memory Words Free:  4033
+Program Memory Words Used:    75
+Program Memory Words Free:  4021
 
 
 Errors   :     0
-Warnings :    55 reported,     0 suppressed
+Warnings :    67 reported,     0 suppressed
 Messages :     4 reported,     0 suppressed
 
 
