@@ -9,7 +9,8 @@ UNIDADES EQU 0x20 ;usamos la dirección de memoria 23
 DECENAS  EQU 0x21 ;Usamos la direccion de memoria 24
 CONTADOR0 EQU 0x22
 CONTADOR1 EQU 0x23
-CONTADOR2 EQU 0x24 ;VARIABLES
+CONTADOR2 EQU 0x24 
+CENTENAS EQU 0x25
 
 CLRF PORTC ;limpiar registro PORTC
 CLRF PORTB ;limpiar registro PORTB
@@ -19,7 +20,7 @@ BSF STATUS,RP0  ;Acceder al banco 1 puesto que en el banco 1 se encuentran los r
 				;BANC0 0 | RP0= 0 , RP1= 0
 				;BANCO 1 | RP0= 1 , RP1= 0
 
-MOVLW b'11111111' ;establecer todos los pines de puerto B como ENTRADA (recibirán valores desde el exterior)
+MOVLW b'10000000' ;establecer el pin 7 como Entrada, todos los demas como SALIDA
 MOVWF TRISB
 MOVLW b'00000000' ;establecer todos los pines de puerto D como SALIDA (Serán manipulados desde dentro)
 MOVWF TRISD
@@ -28,9 +29,9 @@ MOVWF TRISC
 
 BCF STATUS,RP0 ;limpiar RP0 para regresar al BANCO 0.
 ;----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-BTFSS PORTB,0
+BTFSS PORTB,7
 GOTO $-1
-BTFSC PORTB,0
+BTFSC PORTB,7
 GOTO $-1
 
 INICIO
@@ -39,12 +40,15 @@ MOVLW b'00000000' ;inicializar variable UNIDADES en ceros
 MOVWF UNIDADES
 MOVLW b'00000000' ;inicializar variable DECENAS en ceros
 MOVWF DECENAS
+MOVLW b'00000000'
+MOVWF CENTENAS
 ;----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ;MOSTRAR EL "CERO" INICIAL EN AMBOS DISPLAY AL INICIAR EL PROGRAMA
 MOVLW b'00111111' ;Dibujar Cero en el display
 MOVWF PORTD ;Mostrar dicho CERO en display del puerto D
 MOVWF PORTC ;Mostrar dicho CERO en display del puerto C
+MOVWF PORTB ;Mostrar CERO en display del puerto B
 ;----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CALL SUBRUT
 
@@ -73,6 +77,22 @@ CALL SUBRUT
 GOTO CICLO
 
 
+	BLOQUECENTENAS
+MOVLW b'00111111' ;dibujar 0 en DISPLAY de DECENAS (Minuto completado)
+MOVWF PORTC
+MOVLW b'00111111' ;dibujar 0 en display de UNIDADES
+MOVWF PORTD
+
+
+INCF CENTENAS,1
+MOVF CENTENAS,W
+CALL TABLA_CENTENAS
+MOVWF PORTB
+CALL SUBRUT
+CLRF DECENAS
+	GOTO CICLO
+
+
 ;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;PCL (Program Counter Low)
 TABLA
@@ -90,6 +110,16 @@ RETLW b'01100111'	  ;NUEVE
 GOTO REINICIAR_UNIDADES ;DIEZ
 
 TABLA_DECENAS
+ADDWF PCL,F ;Suma el contenido del Registro W a PCL y el resultado se almacena en el mismo registro (PCL).
+RETLW b'00111111'     ;CERO 
+RETLW b'00000110' 	  ;UNO
+RETLW b'01011011' 	  ;DOS
+RETLW b'01001111' 	  ;TRES
+RETLW b'01100110'	  ;CUATRO
+RETLW b'01101101' 	  ;CINCO
+GOTO BLOQUECENTENAS
+
+TABLA_CENTENAS
 ADDWF PCL,F ;Suma el contenido del Registro W a PCL y el resultado se almacena en el mismo registro (PCL).
 RETLW b'00111111'     ;CERO 
 RETLW b'00000110' 	  ;UNO
